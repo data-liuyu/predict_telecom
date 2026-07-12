@@ -1,0 +1,2527 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>刘宇 / 数据分析师 - 个人作品集</title>
+    <style>
+        /* ========== 基础重置 ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-dark: #0a0a0a;
+            --bg-mid: #1a1a1a;
+            --bg-card: #2a2a2a;
+            --gold: #D4AF37;
+            --gold-light: #F4E4BC;
+            --gold-gradient: linear-gradient(135deg, #D4AF37 0%, #F4E4BC 50%, #D4AF37 100%);
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --text-muted: #666666;
+            --border: #333333;
+            --border-gold: rgba(212, 175, 55, 0.3);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+            background: linear-gradient(180deg, var(--bg-dark) 0%, var(--bg-mid) 100%);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* 衬线字体 - 用于标题 */
+        .serif {
+            font-family: "Playfair Display", "Times New Roman", Georgia, "Noto Serif SC", "Source Han Serif SC", serif;
+        }
+
+        /* ========== 导航栏 ========== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 1rem 2rem;
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .navbar.scrolled {
+            padding: 0.6rem 2rem;
+            background: rgba(10, 10, 10, 0.95);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-size: 1.3rem;
+            font-weight: 700;
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 2px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--gold);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--gold);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--gold);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* ========== 通用板块样式 ========== */
+        .section {
+            padding: 6rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-align: center;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-secondary);
+            margin-bottom: 4rem;
+            font-size: 1rem;
+        }
+
+        .section-divider {
+            width: 60px;
+            height: 2px;
+            background: var(--gold-gradient);
+            margin: 0 auto 3rem;
+        }
+
+        /* ========== 渐入动画 ========== */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .fade-in-delay-1 { transition-delay: 0.1s; }
+        .fade-in-delay-2 { transition-delay: 0.2s; }
+        .fade-in-delay-3 { transition-delay: 0.3s; }
+        .fade-in-delay-4 { transition-delay: 0.4s; }
+
+        /* ========== Hero 首页 ========== */
+        #hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            padding: 0 2rem;
+        }
+
+        /* 粒子背景 */
+        #particles-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 1;
+            position: relative;
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1rem, 2.5vw, 1.3rem);
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            letter-spacing: 2px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.9rem 2.2rem;
+            font-size: 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            letter-spacing: 1px;
+            border: none;
+        }
+
+        .btn-gold {
+            background: var(--gold-gradient);
+            color: #0a0a0a;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-gold::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn-gold:hover::before {
+            left: 100%;
+        }
+
+        .btn-gold:hover {
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            background: transparent;
+        }
+
+        .btn-outline:hover {
+            background: rgba(212, 175, 55, 0.1);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--gold);
+            animation: bounce 2s infinite;
+            font-size: 0.8rem;
+            text-align: center;
+        }
+
+        .scroll-indicator .arrow {
+            display: block;
+            width: 20px;
+            height: 20px;
+            margin: 0.5rem auto 0;
+            border-right: 2px solid var(--gold);
+            border-bottom: 2px solid var(--gold);
+            transform: rotate(45deg);
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+            40% { transform: translateX(-50%) translateY(-10px); }
+            60% { transform: translateX(-50%) translateY(-5px); }
+        }
+
+        /* ========== 关于我 ========== */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: start;
+        }
+
+        .about-info h3 {
+            font-size: 1.5rem;
+            color: var(--gold);
+            margin-bottom: 1.5rem;
+        }
+
+        .info-list {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .info-list li {
+            padding: 0.5rem 0;
+            color: var(--text-secondary);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .info-list li span:first-child {
+            color: var(--text-muted);
+        }
+
+        .self-eval {
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        .self-eval p {
+            margin-bottom: 0.8rem;
+        }
+
+        /* 技能雷达图区域 */
+        .skills-visual h3 {
+            font-size: 1.5rem;
+            color: var(--gold);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .skill-bars {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .skill-bar-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .skill-bar-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .skill-bar-label span:last-child {
+            color: var(--gold);
+        }
+
+        .skill-bar-track {
+            height: 8px;
+            background: var(--bg-card);
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .skill-bar-fill {
+            height: 100%;
+            background: var(--gold-gradient);
+            border-radius: 4px;
+            width: 0;
+            transition: width 1.5s ease;
+            position: relative;
+        }
+
+        .skill-bar-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 10px;
+            height: 100%;
+            background: var(--gold-light);
+            box-shadow: 0 0 10px var(--gold-light);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        /* ========== 项目展示 ========== */
+        #project {
+            background: rgba(0, 0, 0, 0.2);
+            max-width: 100%;
+            padding-left: 2rem;
+            padding-right: 2rem;
+        }
+
+        #project .section-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .project-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .project-title-main {
+            font-size: 2rem;
+            color: var(--text-primary);
+            margin-bottom: 0.8rem;
+        }
+
+        .project-title-main .highlight {
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* 数据卡片 */
+        .data-cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 4rem;
+        }
+
+        .data-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-gold);
+            border-radius: 8px;
+            padding: 2rem 1rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .data-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 2px;
+            background: var(--gold-gradient);
+            transition: left 0.5s ease;
+        }
+
+        .data-card:hover {
+            border-color: var(--gold);
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.2);
+            transform: translateY(-5px);
+        }
+
+        .data-card:hover::before {
+            left: 0;
+        }
+
+        .data-card .number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .data-card .label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* 核心贡献 */
+        .contributions-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 4rem;
+        }
+
+        .contribution-card {
+            background: var(--bg-card);
+            border-radius: 8px;
+            padding: 1.8rem;
+            border-left: 3px solid var(--gold);
+            transition: all 0.3s ease;
+        }
+
+        .contribution-card:hover {
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.15);
+            transform: translateX(5px);
+        }
+
+        .contribution-card h4 {
+            color: var(--gold);
+            font-size: 1.1rem;
+            margin-bottom: 0.6rem;
+        }
+
+        .contribution-card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.7;
+        }
+
+        /* Axure原型画廊 */
+        .prototype-section {
+            margin-bottom: 4rem;
+        }
+
+        .prototype-section h3 {
+            text-align: center;
+            font-size: 1.8rem;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .prototype-section .subtitle {
+            text-align: center;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+        }
+
+        .prototype-gallery {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 1.2rem;
+        }
+
+        .gallery-item {
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .gallery-item:hover .gallery-img-wrapper {
+            border-color: var(--gold);
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.5);
+        }
+
+        .gallery-item:hover .gallery-img {
+            transform: scale(1.05);
+        }
+
+        .gallery-img-wrapper {
+            border: 1px solid var(--border-gold);
+            border-radius: 12px;
+            overflow: hidden;
+            background: var(--bg-card);
+            transition: all 0.3s ease;
+            aspect-ratio: 9 / 16;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .gallery-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+            display: block;
+        }
+
+        .gallery-label {
+            margin-top: 0.8rem;
+            color: var(--gold);
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            font-weight: 500;
+        }
+
+        /* Lightbox */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .lightbox.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .lightbox-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 85vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lightbox-img {
+            max-width: 100%;
+            max-height: 85vh;
+            object-fit: contain;
+            border: 1px solid var(--border-gold);
+            border-radius: 8px;
+            box-shadow: 0 0 60px rgba(212, 175, 55, 0.3);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: -50px;
+            right: 0;
+            background: none;
+            border: none;
+            color: var(--gold);
+            font-size: 2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lightbox-close:hover {
+            transform: scale(1.2);
+            text-shadow: 0 0 10px var(--gold);
+        }
+
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            font-size: 1.5rem;
+            cursor: pointer;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .lightbox-nav:hover {
+            background: var(--gold);
+            color: #0a0a0a;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.6);
+        }
+
+        .lightbox-prev {
+            left: -80px;
+        }
+
+        .lightbox-next {
+            right: -80px;
+        }
+
+        .lightbox-counter {
+            position: absolute;
+            bottom: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--gold);
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+        }
+
+        .lightbox-caption {
+            position: absolute;
+            bottom: -70px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+        }
+
+        /* 模型在线体验区 */
+        .model-demo-section {
+            background: linear-gradient(135deg, rgba(42, 42, 42, 0.5) 0%, rgba(26, 26, 26, 0.8) 100%);
+            border: 1px solid var(--border-gold);
+            border-radius: 12px;
+            padding: 3rem;
+            margin-bottom: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .model-demo-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: var(--gold-gradient);
+        }
+
+        .model-demo-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .model-demo-header h3 {
+            font-size: 1.8rem;
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .model-demo-header p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .form-groups {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+        }
+
+        .form-group-title {
+            color: var(--gold);
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border-gold);
+            font-weight: 500;
+        }
+
+        .form-row {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .form-row label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .form-row input,
+        .form-row select {
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            padding: 0.6rem 0.8rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            transition: border-color 0.3s ease;
+            font-family: inherit;
+        }
+
+        .form-row input:focus,
+        .form-row select:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+        }
+
+        /* 开关样式 */
+        .switch-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .switch-row label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .switch {
+            position: relative;
+            width: 44px;
+            height: 24px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider-switch {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--bg-dark);
+            border: 1px solid var(--border);
+            transition: .3s;
+            border-radius: 24px;
+        }
+
+        .slider-switch:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 3px;
+            bottom: 3px;
+            background-color: var(--text-muted);
+            transition: .3s;
+            border-radius: 50%;
+        }
+
+        .switch input:checked + .slider-switch {
+            background-color: rgba(212, 175, 55, 0.2);
+            border-color: var(--gold);
+        }
+
+        .switch input:checked + .slider-switch:before {
+            transform: translateX(20px);
+            background-color: var(--gold);
+            box-shadow: 0 0 8px var(--gold);
+        }
+
+        .predict-btn-wrapper {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .btn-predict {
+            padding: 1rem 3rem;
+            font-size: 1.1rem;
+            background: var(--gold-gradient);
+            color: #0a0a0a;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-predict:hover {
+            box-shadow: 0 0 40px rgba(212, 175, 55, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .btn-predict::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            animation: light-sweep 3s infinite;
+        }
+
+        @keyframes light-sweep {
+            0% { left: -100%; }
+            50%, 100% { left: 100%; }
+        }
+
+        /* 预测结果区 */
+        .result-section {
+            display: none;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 10px;
+            padding: 2rem;
+            border: 1px solid var(--border-gold);
+        }
+
+        .result-section.show {
+            display: block;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-probability {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .result-probability h4 {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+
+        .probability-circle {
+            position: relative;
+            width: 160px;
+            height: 160px;
+            margin: 0 auto;
+        }
+
+        .probability-circle svg {
+            transform: rotate(-90deg);
+        }
+
+        .probability-circle .bg-circle {
+            fill: none;
+            stroke: var(--bg-card);
+            stroke-width: 8;
+        }
+
+        .probability-circle .progress-circle {
+            fill: none;
+            stroke: url(#goldGradient);
+            stroke-width: 8;
+            stroke-linecap: round;
+            stroke-dasharray: 440;
+            stroke-dashoffset: 440;
+            transition: stroke-dashoffset 2s ease;
+        }
+
+        .probability-number {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2rem;
+            font-weight: 700;
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .risk-level {
+            text-align: center;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            border-radius: 6px;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .risk-low {
+            background: rgba(34, 197, 94, 0.1);
+            color: #22c55e;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+
+        .risk-medium {
+            background: rgba(234, 179, 8, 0.1);
+            color: #eab308;
+            border: 1px solid rgba(234, 179, 8, 0.3);
+        }
+
+        .risk-high {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .top-factors h4 {
+            color: var(--gold);
+            font-size: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .factor-list {
+            list-style: none;
+        }
+
+        .factor-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.6rem 0;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .factor-rank {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--gold-gradient);
+            color: #0a0a0a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .factor-name {
+            flex: 1;
+        }
+
+        .factor-impact {
+            color: var(--gold);
+            font-size: 0.85rem;
+        }
+
+        /* 项目成果 */
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+
+        .achievement-card {
+            background: var(--bg-card);
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .achievement-card:hover {
+            border-color: var(--gold);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.15);
+        }
+
+        .achievement-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .achievement-card h4 {
+            color: var(--gold);
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .achievement-card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* ========== 技能栈 ========== */
+        .skill-categories {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+
+        .skill-category {
+            background: var(--bg-card);
+            border-radius: 8px;
+            padding: 2rem;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .skill-category:hover {
+            border-color: var(--border-gold);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.1);
+        }
+
+        .skill-category h4 {
+            color: var(--gold);
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border-gold);
+        }
+
+        .skill-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+        }
+
+        .skill-tag {
+            padding: 0.4rem 1rem;
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid var(--border-gold);
+            color: var(--gold-light);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            transition: all 0.3s ease;
+        }
+
+        .skill-tag:hover {
+            background: rgba(212, 175, 55, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* ========== 联系我 ========== */
+        .contact-card {
+            max-width: 600px;
+            margin: 0 auto;
+            background: var(--bg-card);
+            border: 1px solid var(--border-gold);
+            border-radius: 12px;
+            padding: 3rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--gold-gradient);
+        }
+
+        .contact-card h3 {
+            font-size: 1.5rem;
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 2rem;
+        }
+
+        .contact-items {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 1.5rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .contact-item:hover {
+            border-color: var(--gold);
+        }
+
+        .contact-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .contact-icon {
+            font-size: 1.5rem;
+        }
+
+        .contact-text {
+            text-align: left;
+        }
+
+        .contact-text .label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .contact-text .value {
+            color: var(--text-primary);
+            font-size: 1rem;
+        }
+
+        .copy-btn {
+            padding: 0.4rem 1rem;
+            background: transparent;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .copy-btn:hover {
+            background: rgba(212, 175, 55, 0.1);
+        }
+
+        .copy-btn.copied {
+            background: var(--gold);
+            color: #0a0a0a;
+        }
+
+        /* ========== 页脚 ========== */
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border);
+        }
+
+        footer .gold-line {
+            color: var(--gold);
+        }
+
+        /* ========== 响应式适配 ========== */
+        @media (max-width: 900px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: rgba(10, 10, 10, 0.98);
+                flex-direction: column;
+                padding: 1rem 2rem;
+                gap: 1rem;
+                border-bottom: 1px solid var(--border);
+            }
+
+            .nav-links.open {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .section {
+                padding: 4rem 1.5rem;
+            }
+
+            .section-title {
+                font-size: 1.8rem;
+            }
+
+            .about-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .data-cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .data-card .number {
+                font-size: 2rem;
+            }
+
+            .contributions-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .prototype-gallery {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .form-groups {
+                grid-template-columns: 1fr;
+            }
+
+            .model-demo-section {
+                padding: 1.5rem;
+            }
+
+            .achievements-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .skill-categories {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-card {
+                padding: 2rem 1.5rem;
+            }
+
+            .contact-item {
+                flex-direction: column;
+                gap: 0.8rem;
+                text-align: center;
+            }
+
+            .contact-info {
+                flex-direction: column;
+            }
+
+            .contact-text {
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 500px) {
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 250px;
+                text-align: center;
+            }
+
+            .data-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .prototype-gallery {
+                grid-template-columns: 1fr;
+            }
+            
+            .lightbox-nav {
+                width: 36px;
+                height: 36px;
+                font-size: 1rem;
+            }
+            
+            .lightbox-prev {
+                left: -50px;
+            }
+            
+            .lightbox-next {
+                right: -50px;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+            }
+
+            .project-title-main {
+                font-size: 1.4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- SVG 渐变定义 -->
+    <svg width="0" height="0" style="position:absolute">
+        <defs>
+            <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#D4AF37"/>
+                <stop offset="50%" style="stop-color:#F4E4BC"/>
+                <stop offset="100%" style="stop-color:#D4AF37"/>
+            </linearGradient>
+        </defs>
+    </svg>
+
+    <!-- ========== 导航栏 ========== -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-logo serif">LIU YU</div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#hero">首页</a></li>
+                <li><a href="#about">关于我</a></li>
+                <li><a href="#project">项目展示</a></li>
+                <li><a href="#skills">技能栈</a></li>
+                <li><a href="#contact">联系我</a></li>
+            </ul>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+        </div>
+    </nav>
+
+    <!-- ========== Hero 首页 ========== -->
+    <section id="hero">
+        <canvas id="particles-canvas"></canvas>
+        <div class="hero-content">
+            <h1 class="hero-title serif fade-in">刘宇 / 数据分析师</h1>
+            <p class="hero-subtitle fade-in fade-in-delay-1">用数据驱动决策，让洞察创造价值</p>
+            <div class="hero-buttons fade-in fade-in-delay-2">
+                <a href="#project" class="btn btn-gold">查看我的项目</a>
+                <a href="#contact" class="btn btn-outline">联系我</a>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <span>向下滚动</span>
+            <span class="arrow"></span>
+        </div>
+    </section>
+
+    <!-- ========== 关于我 ========== -->
+    <section id="about" class="section">
+        <h2 class="section-title serif fade-in">关于我</h2>
+        <div class="section-divider fade-in fade-in-delay-1"></div>
+        <p class="section-subtitle fade-in fade-in-delay-1">用数据讲故事，用分析创价值</p>
+        
+        <div class="about-grid">
+            <div class="about-info fade-in fade-in-delay-2">
+                <h3 class="serif">教育背景</h3>
+                <ul class="info-list">
+                    <li><span>学校</span><span>浙江工商大学杭州商学院</span></li>
+                    <li><span>专业</span><span>应用统计学（本科）</span></li>
+                    <li><span>毕业时间</span><span>2028.06</span></li>
+                    <li><span>现居</span><span>浙江杭州</span></li>
+                </ul>
+
+                <h3 class="serif" style="margin-top: 2rem;">自我评价</h3>
+                <div class="self-eval">
+                    <p>📊 热爱数据科学，具备扎实的统计学基础与数据分析能力，熟练掌握 Python 数据分析全流程。</p>
+                    <p>🎯 思维严谨，善于从复杂数据中提炼关键洞察，将业务问题转化为可量化的分析方案。</p>
+                    <p>💡 持续学习 AI 工具与前沿技术，注重将技术能力落地到实际业务场景中创造价值。</p>
+                    <p>🤝 具备良好的沟通表达能力与团队协作精神，能够高效推进跨部门项目落地。</p>
+                </div>
+            </div>
+
+            <div class="skills-visual fade-in fade-in-delay-3">
+                <h3 class="serif">核心能力</h3>
+                <div class="skill-bars" id="skillBars">
+                    <div class="skill-bar-item">
+                        <div class="skill-bar-label">
+                            <span>数据建模与分析</span>
+                            <span>90%</span>
+                        </div>
+                        <div class="skill-bar-track">
+                            <div class="skill-bar-fill" data-width="90"></div>
+                        </div>
+                    </div>
+                    <div class="skill-bar-item">
+                        <div class="skill-bar-label">
+                            <span>统计工具应用</span>
+                            <span>85%</span>
+                        </div>
+                        <div class="skill-bar-track">
+                            <div class="skill-bar-fill" data-width="85"></div>
+                        </div>
+                    </div>
+                    <div class="skill-bar-item">
+                        <div class="skill-bar-label">
+                            <span>AI工具与效率</span>
+                            <span>88%</span>
+                        </div>
+                        <div class="skill-bar-track">
+                            <div class="skill-bar-fill" data-width="88"></div>
+                        </div>
+                    </div>
+                    <div class="skill-bar-item">
+                        <div class="skill-bar-label">
+                            <span>产品原型设计</span>
+                            <span>75%</span>
+                        </div>
+                        <div class="skill-bar-track">
+                            <div class="skill-bar-fill" data-width="75"></div>
+                        </div>
+                    </div>
+                    <div class="skill-bar-item">
+                        <div class="skill-bar-label">
+                            <span>数据可视化</span>
+                            <span>82%</span>
+                        </div>
+                        <div class="skill-bar-track">
+                            <div class="skill-bar-fill" data-width="82"></div>
+                        </div>
+                    </div>
+                    <div class="skill-bar-item">
+                        <div class="skill-bar-label">
+                            <span>业务理解与沟通</span>
+                            <span>80%</span>
+                        </div>
+                        <div class="skill-bar-track">
+                            <div class="skill-bar-fill" data-width="80"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== 项目展示 ========== -->
+    <section id="project" class="section">
+        <div class="section-inner">
+            <h2 class="section-title serif fade-in">项目展示</h2>
+            <div class="section-divider fade-in fade-in-delay-1"></div>
+            
+            <div class="project-header fade-in fade-in-delay-1">
+                <h3 class="project-title-main serif">
+                    <span class="highlight">电信客户流失预测</span>模型构建
+                </h3>
+                <p class="section-subtitle" style="margin-bottom: 2rem;">
+                    针对电信行业客户流失率高的痛点，覆盖 3300+ 存量客户，构建端到端的流失预警体系
+                </p>
+            </div>
+
+            <!-- 3.1 项目概述 - 核心数据卡片 -->
+            <div class="data-cards fade-in fade-in-delay-2">
+                <div class="data-card">
+                    <div class="number" data-target="92.8" data-suffix="%">0%</div>
+                    <div class="label">模型准确率</div>
+                </div>
+                <div class="data-card">
+                    <div class="number" data-target="0.89" data-suffix="">0</div>
+                    <div class="label">AUC值</div>
+                </div>
+                <div class="data-card">
+                    <div class="number" data-target="85" data-suffix="%">0%</div>
+                    <div class="label">召回率</div>
+                </div>
+                <div class="data-card">
+                    <div class="number" data-target="0.83" data-suffix="">0</div>
+                    <div class="label">F1值</div>
+                </div>
+            </div>
+
+            <!-- 3.2 核心贡献 -->
+            <h3 class="serif" style="text-align:center; font-size:1.8rem; margin-bottom:2rem; color: var(--text-primary);" class="fade-in">核心贡献</h3>
+            <div class="contributions-grid fade-in fade-in-delay-1">
+                <div class="contribution-card">
+                    <h4>🗄️ 数据体系搭建</h4>
+                    <p>构建 MySQL 数据库，设计 3 大主题 3 张核心表，整合客户基础信息、通话行为、服务记录等多维度数据，数据完整度达 98.7%。</p>
+                </div>
+                <div class="contribution-card">
+                    <h4>🔬 特征工程设计</h4>
+                    <p>深挖 20+ 维衍生特征，IV 值均值达 0.32，Top 5 特征贡献度超过 75%，显著提升模型区分能力与业务可解释性。</p>
+                </div>
+                <div class="contribution-card">
+                    <h4>🤖 模型迭代调优</h4>
+                    <p>采用逻辑回归 + 随机森林组合策略，通过 5 折交叉验证与网格搜索进行超参数调优，最终模型 AUC 达 0.89，准确率 92.8%。</p>
+                </div>
+                <div class="contribution-card">
+                    <h4>📱 落地产品设计</h4>
+                    <p>使用 Axure RP 设计完整的流失预警平台原型，涵盖 6 个核心页面，打通模型输出与业务应用的最后一公里。</p>
+                </div>
+            </div>
+
+            <!-- 3.3 Axure原型展示区 -->
+            <div class="prototype-section fade-in fade-in-delay-2">
+                <h3 class="serif">Axure 原型设计</h3>
+                <p class="subtitle">5个核心页面，覆盖流失预警全流程</p>
+                <div class="prototype-gallery">
+                    <div class="gallery-item" onclick="openLightbox(0)">
+                        <div class="gallery-img-wrapper">
+                            <img src="axure-1-login.png" alt="登录页" class="gallery-img">
+                        </div>
+                        <div class="gallery-label">登录页</div>
+                    </div>
+                    <div class="gallery-item" onclick="openLightbox(1)">
+                        <div class="gallery-img-wrapper">
+                            <img src="axure-2-predict.png" alt="客户预测" class="gallery-img">
+                        </div>
+                        <div class="gallery-label">客户预测</div>
+                    </div>
+                    <div class="gallery-item" onclick="openLightbox(2)">
+                        <div class="gallery-img-wrapper">
+                            <img src="axure-3-features.png" alt="特征分析" class="gallery-img">
+                        </div>
+                        <div class="gallery-label">特征分析</div>
+                    </div>
+                    <div class="gallery-item" onclick="openLightbox(3)">
+                        <div class="gallery-img-wrapper">
+                            <img src="axure-4-records.png" alt="历史记录" class="gallery-img">
+                        </div>
+                        <div class="gallery-label">历史记录</div>
+                    </div>
+                    <div class="gallery-item" onclick="openLightbox(4)">
+                        <div class="gallery-img-wrapper">
+                            <img src="axure-5-detail.png" alt="记录详情" class="gallery-img">
+                        </div>
+                        <div class="gallery-label">记录详情</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lightbox -->
+            <div id="lightbox" class="lightbox" onclick="closeLightboxOnBg(event)">
+                <div class="lightbox-content" onclick="event.stopPropagation()">
+                    <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+                    <button class="lightbox-nav lightbox-prev" onclick="prevImage()">&#10094;</button>
+                    <img id="lightbox-img" class="lightbox-img" src="" alt="">
+                    <button class="lightbox-nav lightbox-next" onclick="nextImage()">&#10095;</button>
+                    <div class="lightbox-counter" id="lightbox-counter">1 / 5</div>
+                    <div class="lightbox-caption" id="lightbox-caption"></div>
+                </div>
+            </div>
+
+
+            <!-- 3.4 模型在线体验区 -->
+            <div class="model-demo-section fade-in fade-in-delay-3">
+                <div class="model-demo-header">
+                    <h3 class="serif">⭐ 模型在线体验</h3>
+                    <p>输入客户信息，实时预测流失概率与核心诱因</p>
+                </div>
+
+                <form id="predictForm">
+                    <div class="form-groups">
+                        <!-- 基本信息 -->
+                        <div class="form-group">
+                            <div class="form-group-title">📋 基本信息</div>
+                            <div class="form-row">
+                                <label>State（州）</label>
+                                <select id="state">
+                                    <option value="AK">AK - 阿拉斯加</option>
+                                    <option value="AL">AL - 阿拉巴马</option>
+                                    <option value="AR">AR - 阿肯色</option>
+                                    <option value="AZ">AZ - 亚利桑那</option>
+                                    <option value="CA">CA - 加利福尼亚</option>
+                                    <option value="CO">CO - 科罗拉多</option>
+                                    <option value="CT">CT - 康涅狄格</option>
+                                    <option value="DC">DC - 华盛顿特区</option>
+                                    <option value="DE">DE - 特拉华</option>
+                                    <option value="FL">FL - 佛罗里达</option>
+                                    <option value="GA">GA - 佐治亚</option>
+                                    <option value="HI">HI - 夏威夷</option>
+                                    <option value="IA">IA - 爱荷华</option>
+                                    <option value="ID">ID - 爱达荷</option>
+                                    <option value="IL">IL - 伊利诺伊</option>
+                                    <option value="IN">IN - 印第安纳</option>
+                                    <option value="KS">KS - 堪萨斯</option>
+                                    <option value="KY">KY - 肯塔基</option>
+                                    <option value="LA">LA - 路易斯安那</option>
+                                    <option value="MA">MA - 马萨诸塞</option>
+                                    <option value="MD">MD - 马里兰</option>
+                                    <option value="ME">ME - 缅因</option>
+                                    <option value="MI">MI - 密歇根</option>
+                                    <option value="MN">MN - 明尼苏达</option>
+                                    <option value="MO">MO - 密苏里</option>
+                                    <option value="MS">MS - 密西西比</option>
+                                    <option value="MT">MT - 蒙大拿</option>
+                                    <option value="NC">NC - 北卡罗来纳</option>
+                                    <option value="ND">ND - 北达科他</option>
+                                    <option value="NE">NE - 内布拉斯加</option>
+                                    <option value="NH">NH - NH - 新罕布什尔</option>
+                                    <option value="NJ">NJ - 新泽西</option>
+                                    <option value="NM">NM - 新墨西哥</option>
+                                    <option value="NV">NV - 内华达</option>
+                                    <option value="NY">NY - 纽约</option>
+                                    <option value="OH">OH - 俄亥俄</option>
+                                    <option value="OK">OK - 俄克拉荷马</option>
+                                    <option value="OR">OR - 俄勒冈</option>
+                                    <option value="PA">PA - 宾夕法尼亚</option>
+                                    <option value="RI">RI - 罗德岛</option>
+                                    <option value="SC">SC - 南卡罗来纳</option>
+                                    <option value="SD">SD - 南达科他</option>
+                                    <option value="TN">TN - 田纳西</option>
+                                    <option value="TX">TX - 德克萨斯</option>
+                                    <option value="UT">UT - 犹他</option>
+                                    <option value="VA">VA - 弗吉尼亚</option>
+                                    <option value="VT">VT - 佛蒙特</option>
+                                    <option value="WA">WA - 华盛顿</option>
+                                    <option value="WI">WI - 威斯康星</option>
+                                    <option value="WV">WV - 西弗吉尼亚</option>
+                                    <option value="WY">WY - 怀俄明</option>
+                                </select>
+                            </div>
+                            <div class="form-row">
+                                <label>Account Length（在网月数）</label>
+                                <input type="number" id="accountLength" value="100" min="1" max="250">
+                            </div>
+                            <div class="switch-row">
+                                <label>Int'l Plan（国际套餐）</label>
+                                <label class="switch">
+                                    <input type="checkbox" id="intlPlan">
+                                    <span class="slider-switch"></span>
+                                </label>
+                            </div>
+                            <div class="switch-row">
+                                <label>VMail Plan（语音邮箱）</label>
+                                <label class="switch">
+                                    <input type="checkbox" id="vmailPlan" checked>
+                                    <span class="slider-switch"></span>
+                                </label>
+                            </div>
+                            <div class="form-row">
+                                <label>VMail Message（语音邮件数）</label>
+                                <input type="number" id="vmailMessage" value="20" min="0" max="60">
+                            </div>
+                        </div>
+
+                        <!-- 日间通话 -->
+                        <div class="form-group">
+                            <div class="form-group-title">☀️ 日间通话</div>
+                            <div class="form-row">
+                                <label>Day Mins（日间通话分钟）</label>
+                                <input type="number" id="dayMins" value="180" min="0" max="400" step="0.1">
+                            </div>
+                            <div class="form-row">
+                                <label>Day Calls（日间通话次数）</label>
+                                <input type="number" id="dayCalls" value="100" min="0" max="200">
+                            </div>
+                            <div class="form-row">
+                                <label>Day Charge（日间话费）</label>
+                                <input type="number" id="dayCharge" value="30" min="0" max="60" step="0.1">
+                            </div>
+                            <div class="form-group-title" style="margin-top: 1rem;">🌙 晚间通话</div>
+                            <div class="form-row">
+                                <label>Eve Mins（晚间通话分钟）</label>
+                                <input type="number" id="eveMins" value="200" min="0" max="400" step="0.1">
+                            </div>
+                            <div class="form-row">
+                                <label>Eve Calls（晚间通话次数）</label>
+                                <input type="number" id="eveCalls" value="100" min="0" max="200">
+                            </div>
+                            <div class="form-row">
+                                <label>Eve Charge（晚间话费）</label>
+                                <input type="number" id="eveCharge" value="17" min="0" max="40" step="0.1">
+                            </div>
+                        </div>
+
+                        <!-- 夜间通话 -->
+                        <div class="form-group">
+                            <div class="form-group-title">🌃 夜间通话</div>
+                            <div class="form-row">
+                                <label>Night Mins（夜间通话分钟）</label>
+                                <input type="number" id="nightMins" value="200" min="0" max="400" step="0.1">
+                            </div>
+                            <div class="form-row">
+                                <label>Night Calls（夜间通话次数）</label>
+                                <input type="number" id="nightCalls" value="100" min="0" max="200">
+                            </div>
+                            <div class="form-row">
+                                <label>Night Charge（夜间话费）</label>
+                                <input type="number" id="nightCharge" value="9" min="0" max="20" step="0.1">
+                            </div>
+                            <div class="form-group-title" style="margin-top: 1rem;">🌍 国际通话</div>
+                            <div class="form-row">
+                                <label>Intl Mins（国际通话分钟）</label>
+                                <input type="number" id="intlMins" value="10" min="0" max="30" step="0.1">
+                            </div>
+                            <div class="form-row">
+                                <label>Intl Calls（国际通话次数）</label>
+                                <input type="number" id="intlCalls" value="4" min="0" max="20">
+                            </div>
+                            <div class="form-row">
+                                <label>Intl Charge（国际话费）</label>
+                                <input type="number" id="intlCharge" value="2.7" min="0" max="10" step="0.1">
+                            </div>
+                        </div>
+
+                        <!-- 客服 -->
+                        <div class="form-group">
+                            <div class="form-group-title">📞 客服呼叫</div>
+                            <div class="form-row">
+                                <label>CustServ Calls（客服呼叫次数）</label>
+                                <input type="number" id="custServCalls" value="1" min="0" max="10">
+                            </div>
+                            <div style="margin-top: 1.5rem; padding: 1rem; background: rgba(212, 175, 55, 0.05); border-radius: 6px; border: 1px solid var(--border-gold);">
+                                <p style="color: var(--gold); font-size: 0.85rem; margin-bottom: 0.4rem;">💡 提示</p>
+                                <p style="color: var(--text-secondary); font-size: 0.8rem; line-height: 1.6;">
+                                    客服呼叫次数和国际套餐是影响流失的最重要因素。尝试将客服呼叫调到 4 次以上，或开启国际套餐，观察流失概率的变化。
+                                </p>
+                            </div>
+                            <div style="margin-top: 1rem;">
+                                <button type="button" class="btn btn-outline" style="width: 100%; font-size: 0.85rem; padding: 0.6rem;" onclick="fillRandomHighRisk()">
+                                    🎲 高风险样例
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="predict-btn-wrapper">
+                        <button type="button" class="btn-predict" onclick="predictChurn()">
+                            预测流失概率
+                        </button>
+                    </div>
+                </form>
+
+                <!-- 预测结果 -->
+                <div class="result-section" id="resultSection">
+                    <div class="result-probability">
+                        <h4>客户流失概率</h4>
+                        <div class="probability-circle">
+                            <svg width="160" height="160">
+                                <circle class="bg-circle" cx="80" cy="80" r="70"></circle>
+                                <circle class="progress-circle" id="progressCircle" cx="80" cy="80" r="70"></circle>
+                            </svg>
+                            <div class="probability-number" id="probabilityNumber">0%</div>
+                        </div>
+                    </div>
+
+                    <div class="risk-level" id="riskLevel">
+                        风险等级：计算中...
+                    </div>
+
+                    <div class="top-factors">
+                        <h4>🔍 TOP 3 核心诱因</h4>
+                        <ul class="factor-list" id="factorList">
+                            <!-- 动态生成 -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3.5 项目成果 -->
+            <h3 class="serif" style="text-align:center; font-size:1.8rem; margin-bottom:2rem; color: var(--text-primary);" class="fade-in">项目成果</h3>
+            <div class="achievements-grid fade-in fade-in-delay-2">
+                <div class="achievement-card">
+                    <div class="achievement-icon">📈</div>
+                    <h4>模型性能飞跃</h4>
+                    <p>相较基准逻辑回归模型，准确率提升 <strong style="color: var(--gold);">18 个百分点</strong>，AUC 从 0.71 提升至 0.89，模型区分能力大幅增强。</p>
+                </div>
+                <div class="achievement-card">
+                    <div class="achievement-icon">💰</div>
+                    <h4>业务价值显著</h4>
+                    <p>可提前 1 个月识别高风险客户，Top 20% 高风险客户命中率达 <strong style="color: var(--gold);">78%</strong>，年挽回收入预估超 <strong style="color: var(--gold);">50 万元</strong>。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== 技能栈 ========== -->
+    <section id="skills" class="section">
+        <h2 class="section-title serif fade-in">技能栈</h2>
+        <div class="section-divider fade-in fade-in-delay-1"></div>
+        <p class="section-subtitle fade-in fade-in-delay-1">数据科学 + 产品思维 + AI 工具</p>
+
+        <div class="skill-categories">
+            <div class="skill-category fade-in fade-in-delay-2">
+                <h4>📊 数据建模</h4>
+                <div class="skill-tags">
+                    <span class="skill-tag">Python</span>
+                    <span class="skill-tag">pandas</span>
+                    <span class="skill-tag">numpy</span>
+                    <span class="skill-tag">scikit-learn</span>
+                    <span class="skill-tag">matplotlib</span>
+                    <span class="skill-tag">MySQL</span>
+                </div>
+            </div>
+            <div class="skill-category fade-in fade-in-delay-2">
+                <h4>📐 统计工具</h4>
+                <div class="skill-tags">
+                    <span class="skill-tag">Stata</span>
+                    <span class="skill-tag">SPSS</span>
+                    <span class="skill-tag">描述性统计</span>
+                    <span class="skill-tag">假设检验</span>
+                    <span class="skill-tag">回归分析</span>
+                </div>
+            </div>
+            <div class="skill-category fade-in fade-in-delay-3">
+                <h4>🤖 AI 工具</h4>
+                <div class="skill-tags">
+                    <span class="skill-tag">GPT</span>
+                    <span class="skill-tag">Claude</span>
+                    <span class="skill-tag">Coze</span>
+                    <span class="skill-tag">Prompt Engineering</span>
+                    <span class="skill-tag">工作流自动化</span>
+                </div>
+            </div>
+            <div class="skill-category fade-in fade-in-delay-3">
+                <h4>🛠️ 其他工具</h4>
+                <div class="skill-tags">
+                    <span class="skill-tag">Axure RP</span>
+                    <span class="skill-tag">Excel</span>
+                    <span class="skill-tag">Word</span>
+                    <span class="skill-tag">PowerPoint</span>
+                    <span class="skill-tag">剪映</span>
+                    <span class="skill-tag">Git</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== 联系我 ========== -->
+    <section id="contact" class="section">
+        <h2 class="section-title serif fade-in">联系我</h2>
+        <div class="section-divider fade-in fade-in-delay-1"></div>
+        <p class="section-subtitle fade-in fade-in-delay-1">期待与您的合作与交流</p>
+
+        <div class="contact-card fade-in fade-in-delay-2">
+            <h3 class="serif">联系方式</h3>
+            <div class="contact-items">
+                <div class="contact-item">
+                    <div class="contact-info">
+                        <span class="contact-icon">📱</span>
+                        <div class="contact-text">
+                            <div class="label">电话</div>
+                            <div class="value" id="phoneValue">15775140727</div>
+                        </div>
+                    </div>
+                    <button class="copy-btn" onclick="copyToClipboard('phoneValue', this)">复制</button>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-info">
+                        <span class="contact-icon">📧</span>
+                        <div class="contact-text">
+                            <div class="label">邮箱</div>
+                            <div class="value" id="emailValue">3518288657@qq.com</div>
+                        </div>
+                    </div>
+                    <button class="copy-btn" onclick="copyToClipboard('emailValue', this)">复制</button>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-info">
+                        <span class="contact-icon">📍</span>
+                        <div class="contact-text">
+                            <div class="label">现居</div>
+                            <div class="value" id="locationValue">浙江杭州</div>
+                        </div>
+                    </div>
+                    <button class="copy-btn" onclick="copyToClipboard('locationValue', this)">复制</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== 页脚 ========== -->
+    <footer>
+        <p>© 2025 <span class="gold-line">刘宇</span> · 用数据创造价值</p>
+        <p style="margin-top: 0.5rem; font-size: 0.75rem;">个人作品集 | Data Analyst Portfolio</p>
+    </footer>
+
+    <script>
+        // ========== 导航栏滚动效果 ==========
+        const navbar = document.getElementById('navbar');
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navLinks = document.getElementById('navLinks');
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('open');
+        });
+
+        // 点击导航链接后关闭移动端菜单
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('open');
+            });
+        });
+
+        // ========== 渐入动画 ==========
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    
+                    // 如果是技能进度条区域，触发进度条动画
+                    if (entry.target.querySelector('.skill-bar-fill')) {
+                        animateSkillBars();
+                    }
+                    
+                    // 如果是数据卡片区域，触发数字滚动
+                    if (entry.target.querySelector('.data-card .number')) {
+                        animateNumbers();
+                    }
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // ========== 技能进度条动画 ==========
+        let skillBarsAnimated = false;
+        function animateSkillBars() {
+            if (skillBarsAnimated) return;
+            skillBarsAnimated = true;
+            
+            document.querySelectorAll('.skill-bar-fill').forEach(bar => {
+                const width = bar.getAttribute('data-width');
+                setTimeout(() => {
+                    bar.style.width = width + '%';
+                }, 200);
+            });
+        }
+
+        // ========== 数字滚动动画 ==========
+        let numbersAnimated = false;
+        function animateNumbers() {
+            if (numbersAnimated) return;
+            numbersAnimated = true;
+
+            document.querySelectorAll('.data-card .number').forEach(el => {
+                const target = parseFloat(el.getAttribute('data-target'));
+                const suffix = el.getAttribute('data-suffix') || '';
+                const duration = 1500;
+                const startTime = performance.now();
+                const isDecimal = target % 1 !== 0;
+
+                function update(currentTime) {
+                    const elapsed = currentTime - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    
+                    // ease out cubic
+                    const eased = 1 - Math.pow(1 - progress, 3);
+                    const current = target * eased;
+                    
+                    el.textContent = (isDecimal ? current.toFixed(2) : Math.round(current)) + suffix;
+                    
+                    if (progress < 1) {
+                        requestAnimationFrame(update);
+                    }
+                }
+
+                requestAnimationFrame(update);
+            });
+        }
+
+        // ========== 金色粒子背景 ==========
+        const canvas = document.getElementById('particles-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        function createParticles() {
+            particles = [];
+            const count = Math.floor(window.innerWidth / 20);
+            for (let i = 0; i < count; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 2 + 0.5,
+                    speedX: (Math.random() - 0.5) * 0.3,
+                    speedY: (Math.random() - 0.5) * 0.3,
+                    opacity: Math.random() * 0.5 + 0.2
+                });
+            }
+        }
+
+        function drawParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            particles.forEach(p => {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(212, 175, 55, ${p.opacity})`;
+                ctx.fill();
+
+                // 更新位置
+                p.x += p.speedX;
+                p.y += p.speedY;
+
+                // 边界检测
+                if (p.x < 0) p.x = canvas.width;
+                if (p.x > canvas.width) p.x = 0;
+                if (p.y < 0) p.y = canvas.height;
+                if (p.y > canvas.height) p.y = 0;
+            });
+
+            // 绘制连接线
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < 120) {
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.strokeStyle = `rgba(212, 175, 55, ${0.1 * (1 - distance / 120)})`;
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            requestAnimationFrame(drawParticles);
+        }
+
+        window.addEventListener('resize', () => {
+            resizeCanvas();
+            createParticles();
+        });
+
+        resizeCanvas();
+        createParticles();
+        drawParticles();
+
+        // ========== 流失预测模型 ==========
+        // 模拟预测逻辑：基于业务理解的加权公式
+        // 参考真实电信客户流失数据集的特征重要性分布
+
+        // 特征的基准值（均值）和范围，用于归一化
+        const featureStats = {
+            'Account Length': { mean: 101, std: 40, min: 1, max: 243 },
+            'Day Mins': { mean: 180, std: 54, min: 0, max: 350 },
+            'Day Calls': { mean: 100, std: 20, min: 0, max: 165 },
+            'Day Charge': { mean: 30.6, std: 9.2, min: 0, max: 59.6 },
+            'Eve Mins': { mean: 201, std: 50, min: 0, max: 363 },
+            'Eve Calls': { mean: 100, std: 20, min: 0, max: 170 },
+            'Eve Charge': { mean: 17.1, std: 4.3, min: 0, max: 30.9 },
+            'Night Mins': { mean: 201, std: 50, min: 23, max: 395 },
+            'Night Calls': { mean: 100, std: 20, min: 33, max: 175 },
+            'Night Charge': { mean: 9.0, std: 2.25, min: 1.0, max: 17.8 },
+            'Intl Mins': { mean: 10.2, std: 2.8, min: 0, max: 20 },
+            'Intl Calls': { mean: 4.5, std: 2.4, min: 0, max: 20 },
+            'Intl Charge': { mean: 2.76, std: 0.75, min: 0, max: 5.4 },
+            'CustServ Calls': { mean: 1.56, std: 1.3, min: 0, max: 9 },
+            'VMail Message': { mean: 8, std: 13.6, min: 0, max: 51 }
+        };
+
+        // 特征权重（对流失概率的正向贡献）
+        const featureWeights = {
+            'CustServ Calls': 0.18,    // 最重要：客服呼叫越多越容易流失
+            'Day Charge': 0.12,        // 日话费高 -> 流失
+            'Day Mins': 0.10,          // 日通话长 -> 流失
+            "Int'l Plan": 0.10,        // 有国际套餐 -> 流失（可能因为收费高）
+            'Eve Mins': 0.05,          // 晚间通话
+            'Eve Charge': 0.04,        // 晚间话费
+            'Intl Mins': 0.04,         // 国际通话分钟
+            'Intl Charge': 0.03,       // 国际话费
+            'Night Mins': 0.02,        // 夜间通话
+            'Night Charge': 0.02,      // 夜间话费
+            'Account Length': 0.02,    // 在网时长
+            'Day Calls': 0.01,
+            'Eve Calls': 0.01,
+            'Night Calls': 0.01,
+            'Intl Calls': 0.01,
+            'VMail Message': -0.04,    // 语音邮件多 -> 不易流失（粘性高）
+            'VMail Plan': -0.05        // 有语音邮箱 -> 不易流失
+        };
+
+        // 归一化函数
+        function normalize(value, featureName) {
+            const stats = featureStats[featureName];
+            if (!stats) return 0;
+            // 使用 z-score 后通过 sigmoid 映射到 0-1
+            const z = (value - stats.mean) / stats.std;
+            return 1 / (1 + Math.exp(-z));
+        }
+
+        // 预测流失概率
+        function predictChurn() {
+            // 获取表单值
+            const intlPlan = document.getElementById('intlPlan').checked ? 1 : 0;
+            const vmailPlan = document.getElementById('vmailPlan').checked ? 1 : 0;
+            const vmailMessage = parseFloat(document.getElementById('vmailMessage').value) || 0;
+            const accountLength = parseFloat(document.getElementById('accountLength').value) || 100;
+            const dayMins = parseFloat(document.getElementById('dayMins').value) || 0;
+            const dayCalls = parseFloat(document.getElementById('dayCalls').value) || 0;
+            const dayCharge = parseFloat(document.getElementById('dayCharge').value) || 0;
+            const eveMins = parseFloat(document.getElementById('eveMins').value) || 0;
+            const eveCalls = parseFloat(document.getElementById('eveCalls').value) || 0;
+            const eveCharge = parseFloat(document.getElementById('eveCharge').value) || 0;
+            const nightMins = parseFloat(document.getElementById('nightMins').value) || 0;
+            const nightCalls = parseFloat(document.getElementById('nightCalls').value) || 0;
+            const nightCharge = parseFloat(document.getElementById('nightCharge').value) || 0;
+            const intlMins = parseFloat(document.getElementById('intlMins').value) || 0;
+            const intlCalls = parseFloat(document.getElementById('intlCalls').value) || 0;
+            const intlCharge = parseFloat(document.getElementById('intlCharge').value) || 0;
+            const custServCalls = parseFloat(document.getElementById('custServCalls').value) || 0;
+
+            // 构建特征值对象
+            const features = {
+                'CustServ Calls': custServCalls,
+                'Day Charge': dayCharge,
+                'Day Mins': dayMins,
+                'Eve Mins': eveMins,
+                'Eve Charge': eveCharge,
+                'Intl Mins': intlMins,
+                'Intl Charge': intlCharge,
+                'Night Mins': nightMins,
+                'Night Charge': nightCharge,
+                'Account Length': accountLength,
+                'Day Calls': dayCalls,
+                'Eve Calls': eveCalls,
+                'Night Calls': nightCalls,
+                'Intl Calls': intlCalls,
+                'VMail Message': vmailMessage
+            };
+
+            // 计算加权得分
+            let score = -1.5; // 偏置项，使基准概率较低
+
+            // 连续特征
+            for (const [name, value] of Object.entries(features)) {
+                const normalized = normalize(value, name);
+                const weight = featureWeights[name] || 0;
+                score += normalized * weight * 4; // 放大系数
+            }
+
+            // 二值特征
+            score += intlPlan * featureWeights["Int'l Plan"] * 5;
+            score += vmailPlan * featureWeights['VMail Plan'] * 5;
+
+            // 特殊交互效应：国际套餐 + 国际通话少 -> 更高流失（花了钱没用）
+            if (intlPlan === 1 && intlCalls <= 2) {
+                score += 0.3;
+            }
+
+            // 客服呼叫的非线性效应（4次以上流失率激增）
+            if (custServCalls >= 4) {
+                score += 0.5 + (custServCalls - 4) * 0.15;
+            }
+
+            // 使用 sigmoid 转换为概率
+            const probability = 1 / (1 + Math.exp(-score));
+
+            // 计算各特征贡献度，用于TOP3诱因
+            const contributions = [];
+            
+            // 连续特征贡献
+            for (const [name, value] of Object.entries(features)) {
+                const normalized = normalize(value, name);
+                const weight = featureWeights[name] || 0;
+                const contribution = Math.abs(normalized * weight);
+                if (weight > 0 && normalized > 0.5) {
+                    // 正向风险因素
+                    contributions.push({
+                        name: getFeatureDisplayName(name),
+                        impact: contribution,
+                        direction: 'risk',
+                        description: getFactorDescription(name, value, 'risk')
+                    });
+                } else if (weight < 0 && normalized < 0.5) {
+                    // 负向风险因素（保护性因素缺失）
+                    contributions.push({
+                        name: getFeatureDisplayName(name),
+                        impact: Math.abs(contribution),
+                        direction: 'risk',
+                        description: getFactorDescription(name, value, 'risk')
+                    });
+                }
+            }
+
+            // 二值特征
+            if (intlPlan === 1) {
+                contributions.push({
+                    name: '国际套餐订购',
+                    impact: Math.abs(featureWeights["Int'l Plan"]),
+                    direction: 'risk',
+                    description: '订购国际套餐的客户流失倾向更高'
+                });
+            }
+            if (custServCalls >= 4) {
+                contributions.push({
+                    name: '高频客服呼叫',
+                    impact: 0.25,
+                    direction: 'risk',
+                    description: `客服呼叫 ${custServCalls} 次，超过临界值（4次）`
+                });
+            }
+
+            // 排序取TOP3
+            contributions.sort((a, b) => b.impact - a.impact);
+            const top3 = contributions.slice(0, 3);
+
+            // 显示结果
+            showResult(probability, top3);
+        }
+
+        function getFeatureDisplayName(name) {
+            const names = {
+                'CustServ Calls': '客服呼叫次数',
+                'Day Charge': '日间话费偏高',
+                'Day Mins': '日间通话时长',
+                'Eve Mins': '晚间通话时长',
+                'Eve Charge': '晚间话费偏高',
+                'Intl Mins': '国际通话时长',
+                'Intl Charge': '国际话费偏高',
+                'Night Mins': '夜间通话时长',
+                'Night Charge': '夜间话费',
+                'Account Length': '在网时长',
+                'VMail Message': '语音邮件使用少'
+            };
+            return names[name] || name;
+        }
+
+        function getFactorDescription(name, value, direction) {
+            const descriptions = {
+                'CustServ Calls': `客服呼叫 ${value} 次，问题未有效解决导致不满`,
+                'Day Charge': `日间话费 $${value}，费用较高可能导致价格敏感`,
+                'Day Mins': `日间通话 ${value} 分钟，高用量客户对服务质量更敏感`,
+                'Eve Mins': `晚间通话 ${value} 分钟，非高峰时段使用异常`,
+                'Eve Charge': `晚间话费 $${value}，累计费用偏高`,
+                'Intl Mins': `国际通话 ${value} 分钟，国际业务需求未被满足`,
+                'Intl Charge': `国际话费 $${value}，国际业务成本高`,
+                'VMail Message': `语音邮件仅 ${value} 条，用户粘性较低`
+            };
+            return descriptions[name] || `${name}: ${value}`;
+        }
+
+        function showResult(probability, topFactors) {
+            const resultSection = document.getElementById('resultSection');
+            const probabilityNumber = document.getElementById('probabilityNumber');
+            const progressCircle = document.getElementById('progressCircle');
+            const riskLevel = document.getElementById('riskLevel');
+            const factorList = document.getElementById('factorList');
+
+            resultSection.classList.add('show');
+
+            // 滚动到结果区域
+            setTimeout(() => {
+                resultSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 100);
+
+            // 数字滚动动画
+            const targetProb = probability * 100;
+            const duration = 2000;
+            const startTime = performance.now();
+
+            function animateNumber(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const eased = 1 - Math.pow(1 - progress, 3);
+                const current = targetProb * eased;
+                
+                probabilityNumber.textContent = current.toFixed(1) + '%';
+                
+                // 更新进度环 (周长 = 2 * PI * 70 ≈ 440)
+                const dashOffset = 440 - (440 * current / 100);
+                progressCircle.style.strokeDashoffset = dashOffset;
+
+                if (progress < 1) {
+                    requestAnimationFrame(animateNumber);
+                }
+            }
+
+            requestAnimationFrame(animateNumber);
+
+            // 风险等级
+            let riskText, riskClass;
+            if (probability < 0.3) {
+                riskText = '🟢 风险等级：低风险';
+                riskClass = 'risk-low';
+            } else if (probability < 0.6) {
+                riskText = '🟡 风险等级：中风险';
+                riskClass = 'risk-medium';
+            } else {
+                riskText = '🔴 风险等级：高风险';
+                riskClass = 'risk-high';
+            }
+
+            riskLevel.className = 'risk-level ' + riskClass;
+            riskLevel.textContent = riskText;
+
+            // TOP3诱因
+            factorList.innerHTML = '';
+            if (topFactors.length === 0) {
+                factorList.innerHTML = '<li style="color: var(--text-muted); padding: 0.6rem 0;">暂无显著风险因素</li>';
+            } else {
+                topFactors.forEach((factor, index) => {
+                    const li = document.createElement('li');
+                    li.className = 'factor-item';
+                    li.innerHTML = `
+                        <span class="factor-rank">${index + 1}</span>
+                        <span class="factor-name">
+                            <strong style="color: var(--text-primary);">${factor.name}</strong><br>
+                            <span style="font-size: 0.8rem; color: var(--text-muted);">${factor.description}</span>
+                        </span>
+                        <span class="factor-impact">${(factor.impact * 100).toFixed(0)}%</span>
+                    `;
+                    factorList.appendChild(li);
+                });
+            }
+        }
+
+        // 高风险样例填充
+        function fillRandomHighRisk() {
+            document.getElementById('intlPlan').checked = true;
+            document.getElementById('vmailPlan').checked = false;
+            document.getElementById('vmailMessage').value = 0;
+            document.getElementById('accountLength').value = Math.floor(Math.random() * 50 + 60);
+            document.getElementById('dayMins').value = (Math.random() * 80 + 250).toFixed(1);
+            document.getElementById('dayCalls').value = Math.floor(Math.random() * 40 + 110);
+            document.getElementById('dayCharge').value = (Math.random() * 10 + 40).toFixed(1);
+            document.getElementById('eveMins').value = (Math.random() * 60 + 220).toFixed(1);
+            document.getElementById('eveCalls').value = Math.floor(Math.random() * 30 + 95);
+            document.getElementById('eveCharge').value = (Math.random() * 5 + 19).toFixed(1);
+            document.getElementById('nightMins').value = (Math.random() * 50 + 200).toFixed(1);
+            document.getElementById('nightCalls').value = Math.floor(Math.random() * 30 + 90);
+            document.getElementById('nightCharge').value = (Math.random() * 3 + 9).toFixed(1);
+            document.getElementById('intlMins').value = (Math.random() * 5 + 12).toFixed(1);
+            document.getElementById('intlCalls').value = Math.floor(Math.random() * 3 + 2);
+            document.getElementById('intlCharge').value = (Math.random() * 1.5 + 3.2).toFixed(1);
+            document.getElementById('custServCalls').value = Math.floor(Math.random() * 3 + 4);
+        }
+
+        // ========== 复制功能 ==========
+        function copyToClipboard(elementId, btn) {
+            const text = document.getElementById(elementId).textContent;
+            
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(text).then(() => {
+                    showCopied(btn);
+                });
+            } else {
+                // 降级方案
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                showCopied(btn);
+            }
+        }
+
+        function showCopied(btn) {
+            const originalText = btn.textContent;
+            btn.textContent = '已复制';
+            btn.classList.add('copied');
+            
+            setTimeout(() => {
+                btn.textContent = originalText;
+                btn.classList.remove('copied');
+            }, 2000);
+        }
+
+        // ========== 页面加载时触发 Hero 区动画 ==========
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.querySelectorAll('#hero .fade-in').forEach(el => {
+                    el.classList.add('visible');
+                });
+            }, 200);
+        });
+    
+        // ========== Axure画廊 Lightbox ==========
+        const lightboxImages = [
+            { src: 'axure-1-login.png', caption: '登录页' },
+            { src: 'axure-2-predict.png', caption: '客户预测' },
+            { src: 'axure-3-features.png', caption: '特征分析' },
+            { src: 'axure-4-records.png', caption: '历史记录' },
+            { src: 'axure-5-detail.png', caption: '记录详情' }
+        ];
+        let currentImageIndex = 0;
+
+        function openLightbox(index) {
+            currentImageIndex = index;
+            updateLightboxImage();
+            const lightbox = document.getElementById('lightbox');
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLightbox() {
+            const lightbox = document.getElementById('lightbox');
+            lightbox.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function closeLightboxOnBg(event) {
+            if (event.target.id === 'lightbox') {
+                closeLightbox();
+            }
+        }
+
+        function nextImage() {
+            currentImageIndex = (currentImageIndex + 1) % lightboxImages.length;
+            updateLightboxImage();
+        }
+
+        function prevImage() {
+            currentImageIndex = (currentImageIndex - 1 + lightboxImages.length) % lightboxImages.length;
+            updateLightboxImage();
+        }
+
+        function updateLightboxImage() {
+            const img = document.getElementById('lightbox-img');
+            const counter = document.getElementById('lightbox-counter');
+            const caption = document.getElementById('lightbox-caption');
+            const data = lightboxImages[currentImageIndex];
+            img.src = data.src;
+            img.alt = data.caption;
+            counter.textContent = (currentImageIndex + 1) + ' / ' + lightboxImages.length;
+            caption.textContent = data.caption;
+        }
+
+        // 键盘导航
+        document.addEventListener('keydown', (e) => {
+            const lightbox = document.getElementById('lightbox');
+            if (!lightbox.classList.contains('active')) return;
+            
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowRight') nextImage();
+            if (e.key === 'ArrowLeft') prevImage();
+        });
+
+</script>
+</body>
+</html>
